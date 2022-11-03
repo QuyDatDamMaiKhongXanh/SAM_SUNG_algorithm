@@ -2,7 +2,7 @@
 #define ll long long
 using namespace std;
 ll n, a[1000001], b[1000001];
-set<string> se;
+vector<string> c;
 ll nto(ll n)
 {
     for (int i = 2; i <= sqrt(n); i++)
@@ -23,38 +23,46 @@ bool check(ll b[], int i)
 }
 void try_to(ll i, ll v)
 {
-    for (int j = v; j < n; j++)
+    for (int j = 0; j < 2; j++)
     {
-        b[i] = a[j];
-        if (check(b, i))
+        b[i] = j;
+        if (i == n - 1)
         {
-            string s = "";
-            for (int h = i; h >= 0; h--)
-                s = s + to_string(b[h]) + " ";
-            se.insert(s);
+            ll sum = 0;
+            for (int k = 0; k < n; k++)
+            {
+                if (b[k])
+                    sum += a[k];
+            }
+            if (nto(sum))
+            {
+                for (int k = 0; k < n; k++)
+                {
+                    if (b[k])
+                    {
+                        cout << a[k] << " ";
+                    }
+                }
+                cout << endl;
+            }
         }
-        try_to(i + 1, j + 1);
+        else
+            try_to(i + 1, v);
     }
 }
 int main()
 {
-    cin >> n;
-    for (int i = 0; i < n; i++)
+    ll t;
+    cin >> t;
+    while (t--)
     {
-        cin >> a[i];
-    }
-    sort(a, a + n);
-    for (int i = 0; i < n; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << endl;
-    while (next_permutation(a, a + n))
-    {
+        cin >> n;
         for (int i = 0; i < n; i++)
         {
-            cout << a[i] << " ";
+            cin >> a[i];
         }
-        cout << endl;
+        sort(a, a + n, greater<int>());
+        try_to(0, 0);
+        c.clear();
     }
 }
